@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction & Analytics System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="background-decor">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse logo-icon"></i>
+                <div class="logo-text">
+                    <h1>DiaPredict</h1>
+                    <span>Diabetes Risk Assessment System</span>
+                </div>
+            </div>
+            <nav class="tab-navigation">
+                <button class="nav-btn active" data-tab="predictor-tab">
+                    <i class="fa-solid fa-calculator"></i> Risk Predictor
+                </button>
+                <button class="nav-btn" data-tab="analytics-tab" id="analytics-nav-btn">
+                    <i class="fa-solid fa-chart-line"></i> Model Analytics
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <!-- Predictor Tab -->
+            <section id="predictor-tab" class="tab-content active">
+                <div class="grid-2col">
+                    <!-- Predictor Form Card -->
+                    <div class="glass-card form-card">
+                        <div class="card-header">
+                            <h2>Patient Parameters</h2>
+                            <p>Enter the patient's physiological metrics to run prediction.</p>
+                        </div>
+                        
+                        <form id="prediction-form" class="prediction-form">
+                            <div class="form-grid">
+                                <!-- Pregnancies -->
+                                <div class="form-group">
+                                    <label for="Pregnancies">
+                                        Pregnancies
+                                        <span class="tooltip-icon" data-tooltip="Number of times pregnant (0 for males)"><i class="fa-solid fa-circle-info"></i></span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-baby input-icon"></i>
+                                        <input type="number" id="Pregnancies" name="Pregnancies" min="0" max="20" placeholder="e.g. 2" required>
+                                    </div>
+                                </div>
+
+                                <!-- Glucose -->
+                                <div class="form-group">
+                                    <label for="Glucose">
+                                        Glucose Level (mg/dL)
+                                        <span class="tooltip-icon" data-tooltip="Plasma glucose concentration in a 2 hours oral glucose tolerance test"><i class="fa-solid fa-circle-info"></i></span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-droplet input-icon"></i>
+                                        <input type="number" id="Glucose" name="Glucose" min="0" max="300" placeholder="e.g. 120" required>
+                                    </div>
+                                </div>
+
+                                <!-- Blood Pressure -->
+                                <div class="form-group">
+                                    <label for="BloodPressure">
+                                        Blood Pressure (mmHg)
+                                        <span class="tooltip-icon" data-tooltip="Diastolic blood pressure"><i class="fa-solid fa-circle-info"></i></span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-gauge input-icon"></i>
+                                        <input type="number" id="BloodPressure" name="BloodPressure" min="0" max="200" placeholder="e.g. 80" required>
+                                    </div>
+                                </div>
+
+                                <!-- Skin Thickness -->
+                                <div class="form-group">
+                                    <label for="SkinThickness">
+                                        Skin Thickness (mm)
+                                        <span class="tooltip-icon" data-tooltip="Triceps skin fold thickness. Can leave blank or 0 to impute."><i class="fa-solid fa-circle-info"></i></span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-ruler-horizontal input-icon"></i>
+                                        <input type="number" id="SkinThickness" name="SkinThickness" min="0" max="100" placeholder="e.g. 20 (or 0 to auto-fill)">
+                                    </div>
+                                </div>
+
+                                <!-- Insulin -->
+                                <div class="form-group">
+                                    <label for="Insulin">
+                                        Insulin (mu U/ml)
+                                        <span class="tooltip-icon" data-tooltip="2-Hour serum insulin. Can leave blank or 0 to impute."><i class="fa-solid fa-circle-info"></i></span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-syringe input-icon"></i>
+                                        <input type="number" id="Insulin" name="Insulin" min="0" max="900" placeholder="e.g. 85 (or 0 to auto-fill)">
+                                    </div>
+                                </div>
+
+                                <!-- BMI -->
+                                <div class="form-group">
+                                    <label for="BMI">
+                                        BMI (kg/m²)
+                                        <span class="tooltip-icon" data-tooltip="Body mass index (weight in kg / (height in m)^2)"><i class="fa-solid fa-circle-info"></i></span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-weight-scale input-icon"></i>
+                                        <input type="number" id="BMI" name="BMI" step="0.1" min="0" max="70" placeholder="e.g. 26.5" required>
+                                    </div>
+                                </div>
+
+                                <!-- Diabetes Pedigree Function -->
+                                <div class="form-group">
+                                    <label for="DiabetesPedigreeFunction">
+                                        Pedigree Function
+                                        <span class="tooltip-icon" data-tooltip="Diabetes pedigree function (score based on genetic history)"><i class="fa-solid fa-circle-info"></i></span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-dna input-icon"></i>
+                                        <input type="number" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction" step="0.001" min="0" max="3" placeholder="e.g. 0.471" required>
+                                    </div>
+                                </div>
+
+                                <!-- Age -->
+                                <div class="form-group">
+                                    <label for="Age">
+                                        Age (Years)
+                                        <span class="tooltip-icon" data-tooltip="Age of the patient"><i class="fa-solid fa-circle-info"></i></span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-user input-icon"></i>
+                                        <input type="number" id="Age" name="Age" min="1" max="120" placeholder="e.g. 33" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="submit-btn" id="predict-btn">
+                                <span class="btn-text">Predict Diabetes Risk</span>
+                                <i class="fa-solid fa-spinner fa-spin btn-spinner"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Result Card -->
+                    <div class="glass-card result-card empty" id="result-container">
+                        <div class="result-placeholder">
+                            <i class="fa-solid fa-wave-square pulse-icon"></i>
+                            <h3>Awaiting Input Parameters</h3>
+                            <p>Fill out the patient form and press predict. The machine learning model will calculate the diabetes likelihood and generate clinical suggestions.</p>
+                        </div>
+                        
+                        <div class="result-content">
+                            <div class="card-header text-center">
+                                <h2>Risk Analysis</h2>
+                            </div>
+                            
+                            <div class="risk-badge-container">
+                                <div id="risk-badge" class="risk-badge">
+                                    <i id="risk-badge-icon" class="fa-solid"></i>
+                                    <span id="risk-badge-text">Unknown</span>
+                                </div>
+                            </div>
+
+                            <!-- Circular Progress Bar -->
+                            <div class="progress-container">
+                                <div class="circular-progress">
+                                    <div class="value-container" id="probability-value">0%</div>
+                                </div>
+                                <div class="progress-label">Confidence Probability</div>
+                            </div>
+
+                            <!-- Imputed warning banner -->
+                            <div id="imputation-banner" class="imputation-banner" style="display: none;">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                <span>Note: Some missing values were auto-imputed with dataset medians.</span>
+                            </div>
+
+                            <!-- Recommendations -->
+                            <div class="recommendations-section">
+                                <h3><i class="fa-solid fa-stethoscope"></i> Clinical Guidance</h3>
+                                <ul id="recommendations-list">
+                                    <!-- Populated via JS -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Tab -->
+            <section id="analytics-tab" class="tab-content">
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h2>Logistic Regression Model Diagnostics</h2>
+                        <p>Evaluate the accuracy and internal mechanics of the trained classifier.</p>
+                    </div>
+                    
+                    <!-- Metrics Summary Grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <span class="metric-label">Accuracy</span>
+                            <span class="metric-value" id="metric-accuracy">--</span>
+                            <div class="metric-description">Overall correct predictions</div>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Precision</span>
+                            <span class="metric-value" id="metric-precision">--</span>
+                            <div class="metric-description">Reliability of diabetic predictions</div>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Recall</span>
+                            <span class="metric-value" id="metric-recall">--</span>
+                            <div class="metric-description">Ability to detect all diabetic cases</div>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">F1-Score</span>
+                            <span class="metric-value" id="metric-f1">--</span>
+                            <div class="metric-description">Harmonic mean of precision & recall</div>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">ROC AUC</span>
+                            <span class="metric-value" id="metric-auc">--</span>
+                            <div class="metric-description">Discriminative power of probabilities</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plots Section -->
+                <div class="grid-2col-even margin-top">
+                    <!-- Confusion Matrix -->
+                    <div class="glass-card plot-card">
+                        <h3>Confusion Matrix</h3>
+                        <p class="plot-sub">Shows correctly and incorrectly classified instances for each class.</p>
+                        <div class="plot-img-container">
+                            <img src="{{ url_for('static', filename='plots/confusion_matrix.png') }}" alt="Confusion Matrix" class="plot-img" onerror="this.src='https://placehold.co/600x500/1e2230/ffffff?text=Run+Pipeline+First'">
+                        </div>
+                    </div>
+
+                    <!-- ROC Curve -->
+                    <div class="glass-card plot-card">
+                        <h3>ROC Curve</h3>
+                        <p class="plot-sub">Illustrates the trade-off between True Positive Rate and False Positive Rate.</p>
+                        <div class="plot-img-container">
+                            <img src="{{ url_for('static', filename='plots/roc_curve.png') }}" alt="ROC Curve" class="plot-img" onerror="this.src='https://placehold.co/600x500/1e2230/ffffff?text=Run+Pipeline+First'">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Importance -->
+                <div class="glass-card margin-top">
+                    <h3>Feature Coefficients (Variable Importance)</h3>
+                    <p class="plot-sub">This visualization shows the coefficient weights assigned by Logistic Regression. Features with higher absolute values have a stronger impact on classification.</p>
+                    <div class="plot-img-container large-plot">
+                        <img src="{{ url_for('static', filename='plots/feature_coefficients.png') }}" alt="Feature Coefficients" class="plot-img" onerror="this.src='https://placehold.co/800x400/1e2230/ffffff?text=Run+Pipeline+First'">
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Diabetes Disease Prediction System &copy; 2026. Built with Python, Flask, Scikit-Learn, and Logistic Regression.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
