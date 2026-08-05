@@ -1,12 +1,16 @@
 import os
+import psycopg2
 import json
 import pickle
 import numpy as np
 import pandas as pd
 from flask import Flask, request, jsonify, render_template
 
-app = Flask(__name__)
+app = Flask(__name__)   
+DATABASE_URL = os.getenv("DATABASE_URL")
 
+conn = psycopg2.connect(DATABASE_URL)
+cur = conn.cursor()
 MODELS_DIR = os.path.join(os.path.dirname(__file__), 'models')
 PLOTS_DIR = os.path.join(os.path.dirname(__file__), 'static', 'plots')
 PREPROCESSED_DIR = os.path.join(os.path.dirname(__file__), 'data', 'preprocessed')
